@@ -31,7 +31,14 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'CGeneral::index');
+$routes->get('/Login', 'CGeneral::Login');
+$routes->get('/Register', 'CGeneral::Register');
+$routes->match(['get','post'],'/BrowseProducts', 'CGeneral::BrowseProducts');
+$routes->match(['get','post'],'/BrowseProducts?page=(:any)', 'CGeneral::BrowseProducts');
+$routes->match(['get','post'],'/BrowseProducts/(:any)?page=(:any)', 'CGeneral::BrowseProducts/$1');
+$routes->match(['get','post'],'/BrowseProducts/(:any)', 'CGeneral::BrowseProducts/$1');
+$routes->match(['get','post'],'/Product/(:any)', 'CGeneral::ProductDrillDown/$1');
 
 /*
  * --------------------------------------------------------------------
