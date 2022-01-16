@@ -40,6 +40,12 @@ $routes->match(['get','post'],'/BrowseProducts/(:any)?page=(:any)', 'CGeneral::B
 $routes->match(['get','post'],'/BrowseProducts/(:any)', 'CGeneral::BrowseProducts/$1');
 $routes->match(['get','post'],'/Product/(:any)', 'CGeneral::ProductDrillDown/$1');
 
+$routes->match(['get','post'],'/Member', 'CMember::index');
+$routes->match(['get','post'],'/Logout', 'CMember::Logout');
+$routes->match(['get','post'],'/Cart', 'CMember::Cart');
+$routes->match(['get','post'],'/AddToCart/(:any)', 'CMember::AddToCart/$1');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -48,7 +48,17 @@ class MCustomer extends Model
         return $query;
     }
         
-    
+    public function GetUser($em)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('customers');
+        $builder = $builder->select('customerName,contactFirstName,contactLastName','email');
+        $builder = $builder->where('email',$em);
+        $builder = $builder->limit(1);
+        $query = $builder->get();
+        return $query;
+    }
     
     
     

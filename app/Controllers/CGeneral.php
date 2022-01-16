@@ -13,7 +13,7 @@ class CGeneral extends Controller
     public function index()
     {
         
-        $sess = ['email','userType'];
+        $sess = ['email','userType','userdata','cart'];
         //$sess = ['email','pass_word','userType'];
         $session = session();
         $session->remove($sess);
@@ -107,7 +107,7 @@ class CGeneral extends Controller
        //Validation 
        $rules = [                   
            'email' => 'required|min_length[1]|max_length[90]|valid_email',
-           'pass_word' => 'required|min_length[1]|max_length[255]',
+           'password' => 'required|min_length[1]|max_length[255]',
             ];
 
             if(! $this->validate($rules))
@@ -118,7 +118,7 @@ class CGeneral extends Controller
             {
                 $newData = [
                 'email' => $_POST['email'],
-                'pass_word' =>  $_POST['pass_word'],
+                'password' =>  $_POST['password'],
                 
                ];
                 $model = new MCustomer();
@@ -128,6 +128,7 @@ class CGeneral extends Controller
                     $session->setFlashdata('success','Successful Login');
                     $session->set('email',$newData['email']);
                     $session->set('userType','Customer');
+                    $session->set('cart',array());
                 }
                 else
                 {
@@ -146,23 +147,36 @@ class CGeneral extends Controller
                     
                 }
                 
-                /*
+                
                 if($session->get('userType')=='Customer')
                 {
-                    return redirect()->to('/CCustomer');
+                    return redirect()->to('/Member');
                 }
                 else if($session->get('userType')=='Admin')
                 {
                     return redirect()->to('/CAdmin');
                 }
-                */
-                //return redirect()->to('/');
+                else
+                    return redirect()->to('/');
             }
         } 
         echo view('head.php',$data);
         echo view('GeneralHeader');
         echo view('login');
         echo view('Templates/footer');
+    }
+
+    public function Logout()
+    {
+        $this->session = \Config\Services::session();
+        $unsetarr =
+        [
+            'email',
+            'userType',
+        ];
+        $this->session->remove($unsetarr);
+        
+        return redirect()->to("/");
     }
 
     public function BrowseProducts(){
@@ -177,29 +191,25 @@ class CGeneral extends Controller
             $type = "search";
         }
         echo view('head');
-        echo view('generalHeader');
-        $model=new MProducts();
+        if(session()->get('userType')=='Customer')
+            echo view('memberHeader');
+        else if(session()->get('userType')=='Admin')
+            echo view('generalHeader');
+        else
+            echo view('generalHeader');
+        $model = new MProducts();
         $name = "";
         
         if(isset($searchdat) && isset($searchdat['search']))
             $search = $searchdat['search'];
 
-            /*
-        if($search == ""){
-            $paginateData = $model->paginate(12);
-            print_r($paginateData);
-        }
-            }else{
-            $paginateData = $model->GetProducts()->getResultArray();
-            }*/
-        
-        //$model->GetProducts($name);
         if($type == "search")
         {
             $data = [
                 'results' => $model->GetProducts($search)->getResultArray(),
                 'pager' => $paginatePager,
                 'type' => $type,
+                'userType' => session()->get('userType'),
             ];
         }
         else{
@@ -207,6 +217,7 @@ class CGeneral extends Controller
             'results' => $model->paginate(12),
             'pager' => $model->pager,
             'type' => $type,
+            'userType' => session()->get('userType'),
         ];
         }
         /*$model->GetProducts($name);

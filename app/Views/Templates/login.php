@@ -19,7 +19,7 @@
   </div>
   <div class="form-group">
     <label for="ipassword">Password</label>
-    <input type="text" class="form-control" id="ipassword" placeholder="Password" name="pass_word" value="<?= set_value('pass_word') ?>">
+    <input type="text" class="form-control" id="ipassword" placeholder="Password" name="password" value="<?= set_value('password') ?>">
   </div>
  
   
