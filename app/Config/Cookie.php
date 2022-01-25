@@ -51,7 +51,7 @@ class Cookie extends BaseConfig
      *
      * @var string
      */
-    public $domain = 'http://localhost/MyPHP/Repos/TreatyMarket/';
+    public $domain = '';
 
     /**
      * --------------------------------------------------------------------------

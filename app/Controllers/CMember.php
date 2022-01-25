@@ -15,6 +15,7 @@ class CMember extends Controller
         $session = \Config\Services::session();
         $model = new MCustomer();
         $user = $model->GetUser($session->get('email'))->getResult();
+        $userdata = array();
         //print_r($user);
         foreach ($user as $row){
         $userdata = [

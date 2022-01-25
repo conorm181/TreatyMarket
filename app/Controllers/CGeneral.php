@@ -100,7 +100,7 @@ class CGeneral extends Controller
         //$session->remove($sess);
         $data = [];
         helper(['form']);
-        helper('cookie');
+        //helper('cookie');
         $db = \Config\Database::connect();
 
         if($this->request->getMethod() == 'post')
