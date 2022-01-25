@@ -49,7 +49,7 @@ class CMember extends Controller
         ];
         
 
-        print_r($cart);
+        //print_r($cart);
         echo view('head.php');
         echo view('/memberHeader');
         echo view('cart',$data);

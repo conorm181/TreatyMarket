@@ -21,7 +21,10 @@
     <label for="ipassword">Password</label>
     <input type="text" class="form-control" id="ipassword" placeholder="Password" name="password" value="<?= set_value('password') ?>">
   </div>
- 
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+    <label class="form-check-label" for="remember">Remember me</label>
+  </div>
   
         <button type="submit" class="btn btn-primary" style="margin: 1em">Submit</button>
         <a href="Register">Not Registered?</a>

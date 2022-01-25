@@ -34,7 +34,7 @@ class Database extends Config
         'DSN'      => '',
         'hostname' => 'localhost',
         'username' => 'SD3User',
-        'password' => 'SD32021',
+        'password' => 'SoftDev2021',
         'database' => 'treatymarket',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',

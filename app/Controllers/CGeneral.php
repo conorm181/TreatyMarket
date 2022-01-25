@@ -100,6 +100,7 @@ class CGeneral extends Controller
         //$session->remove($sess);
         $data = [];
         helper(['form']);
+        helper('cookie');
         $db = \Config\Database::connect();
 
         if($this->request->getMethod() == 'post')
@@ -150,6 +151,18 @@ class CGeneral extends Controller
                 
                 if($session->get('userType')=='Customer')
                 {
+                    /*
+                    if(isset($_POST['remember'])){
+                        print_r($_POST);
+                        set_cookie([
+                            'name' => 'remember',
+                            'value' => $_POST['email'],
+                            'expire' => time() + 60,
+                            
+                            
+                        ]);
+                    }
+                    */
                     return redirect()->to('/Member');
                 }
                 else if($session->get('userType')=='Admin')
@@ -175,7 +188,7 @@ class CGeneral extends Controller
             'userType',
         ];
         $this->session->remove($unsetarr);
-        
+        delete_cookie("remember");
         return redirect()->to("/");
     }
 

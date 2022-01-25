@@ -42,7 +42,7 @@ class MAdmin extends Model
         $builder = $db->table('administrators');
         $builder->select('email');
         $builder->where('email',$newData['email']);
-        $builder->where('password',hash('md5',$newData['pass_word']));
+        $builder->where('password',hash('md5',$newData['password']));
         $query = $builder->countAllResults();
         return $query;
     }
