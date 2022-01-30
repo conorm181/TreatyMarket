@@ -23,7 +23,7 @@ echo "<div class=\"card-group\">";
                     <input name="quantity" class="form-control mr-sm-1" style="width:6em" type="number">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add To Cart</button>
                 </form>
-                <div class="buto"><a href="#">Add To WishList</a></div>
+                <div class="buto"><a href="<?php echo base_url();?>/AddToWishlist/<?php echo $row['produceCode']?>">Add To WishList</a></div>
             <?php }?>
             </div>
         </div>  

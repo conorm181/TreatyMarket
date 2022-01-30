@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controllers;
+use CodeIgniter\Cookie\Cookie;
+use CodeIgniter\Cookie\CookieStore;
+use DateTime;
 use CodeIgniter\Controller;
 use App\Models\MCustomer;
 use App\Models\MAdmin;
@@ -99,7 +102,7 @@ class CGeneral extends Controller
         $session = session();
         //$session->remove($sess);
         $data = [];
-        helper(['form']);
+        helper(['form', 'cookie']);
         //helper('cookie');
         $db = \Config\Database::connect();
 
@@ -151,22 +154,30 @@ class CGeneral extends Controller
                 
                 if($session->get('userType')=='Customer')
                 {
-                    /*
+                    
                     if(isset($_POST['remember'])){
-                        print_r($_POST);
-                        set_cookie([
-                            'name' => 'remember',
-                            'value' => $_POST['email'],
-                            'expire' => time() + 60,
-                            
-                            
-                        ]);
+                        $this->response->setCookie('remember',$_POST['email'],'86500');
+
+                        //set_cookie('remember',$_POST['email'],'100');
+                        //->withPrefix('__Secure-')
+                        /*
+                        $cookie = (new Cookie('remember_token'))
+                        ->withValue('f699c7fd18a8e082d0228932f3acd40e1ef5ef92efcedda32842a211d62f0aa6')
+                        ->withExpires(new DateTime('+2 hours'))
+                        ->withPath('/')
+                        ->withDomain('')
+                        ->withSecure(true)
+                        ->withHTTPOnly(true)
+                        ->withSameSite(Cookie::SAMESITE_LAX);
+                        setCookie($cookie);
+                        */
                     }
-                    */
+                    
                     return redirect()->to('/Member');
                 }
                 else if($session->get('userType')=='Admin')
                 {
+                    
                     return redirect()->to('/CAdmin');
                 }
                 else

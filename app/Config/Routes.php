@@ -40,11 +40,16 @@ $routes->match(['get','post'],'/BrowseProducts/(:any)?page=(:any)', 'CGeneral::B
 $routes->match(['get','post'],'/BrowseProducts/(:any)', 'CGeneral::BrowseProducts/$1');
 $routes->match(['get','post'],'/Product/(:any)', 'CGeneral::ProductDrillDown/$1');
 
+
 $routes->match(['get','post'],'/Member', 'CMember::index');
 $routes->match(['get','post'],'/Logout', 'CMember::Logout');
 $routes->match(['get','post'],'/Cart', 'CMember::Cart');
+$routes->match(['get','post'],'/Wishlist', 'CMember::Wishlist');
+$routes->match(['get','post'],'/Orders', 'CMember::Orders');
 $routes->match(['get','post'],'/AddToCart/(:any)', 'CMember::AddToCart/$1');
-
+$routes->match(['get','post'],'/RemoveFromCart/(:any)', 'CMember::RemoveFromCart/$1');
+$routes->match(['get','post'],'/AddToWishlist/(:any)', 'CMember::AddToWishlist/$1');
+$routes->match(['get','post'],'/RemoveFromWishlist/(:any)', 'CMember::RemoveFromWishlist/$1');
 
 /*
  * --------------------------------------------------------------------

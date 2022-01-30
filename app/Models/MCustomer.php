@@ -61,7 +61,17 @@ class MCustomer extends Model
     }
     
     
-    
+    public function GetID($em)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('customers');
+        $builder = $builder->select('customerNumber');
+        $builder = $builder->where('email',$em);
+        $builder = $builder->limit(1);
+        $query = $builder->get();
+        return $query;
+    }
     
     
     

@@ -10,7 +10,10 @@
         <a class="nav-link" href="<?php echo base_url();?>/BrowseProducts">Browse Products<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="<?php echo base_url();?>/BrowseProducts">Dun Dun Dun<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="<?php echo base_url();?>/Wishlist">Wishlist<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="<?php echo base_url();?>/Orders">Orders<span class="sr-only">(current)</span></a>
       </li>
 
       
