@@ -218,7 +218,7 @@ class CGeneral extends Controller
         if(session()->get('userType')=='Customer')
             echo view('memberHeader');
         else if(session()->get('userType')=='Admin')
-            echo view('generalHeader');
+            echo view('adminHeader');
         else
             echo view('generalHeader');
         $model = new MProducts();
@@ -258,7 +258,13 @@ class CGeneral extends Controller
     public function ProductDrillDown($id)
     {
         echo view('head');
-        echo view('generalHeader');
+
+        if(session()->get('userType')=='Customer')
+            echo view('memberHeader');
+        else if(session()->get('userType')=='Admin')
+            echo view('adminHeader');
+        else
+            echo view('generalHeader');
         $model = new MProducts();
         $query = $model->GetProductByID($id);
         /*

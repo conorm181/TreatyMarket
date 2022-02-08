@@ -2,11 +2,12 @@
 
 namespace App\Models;
 use CodeIgniter\Model;
+use DateTime;
 
 
-class MOrderDetails extends Model
+class MPayments extends Model
 {
-    protected $table = 'orderDetails';
+    protected $table = 'payments';
 
     protected $allowedFields = ['orderNumber', 'productCode', 'quantityOrdered', 'priceEach'];
     protected $beforeInsert = ['beforeInsert'];
@@ -23,30 +24,23 @@ class MOrderDetails extends Model
     {
         return $data;
     }
-    
-    public function OrderDetails($oid)
-    {
-        $db = \Config\Database::connect();
-        $builder = $this->builder();
-        $builder = $db->table('orderDetails');
-        $builder->select();
-        $builder->like('orderNumber',$oid);
-        $query = $builder->get();
-        return $query;
-    }
-    
-    public function AddItemToOrder($pid,$oid,$quan,$p)
+
+    public function MakePayment($cid,$oid,$name,$cardn,$cvv,$m,$y,$amount)
     {
         $db = \Config\Database::connect();
         $newEntry = [
+            'customerNumber' => $cid,
+            'cardType' => 'Visa',
+            'cardNumber' => $cardn,
+            'cardName' => $name,
+            'expiryDate' => $m.'/'.$y,
+            'CVV' => $cvv,
+            'paymentDate' => date("Y-m-d"),
+            'amount' => $amount,
             'orderNumber' => $oid,
-            'productCode' => $pid,
-            'quantityOrdered' => $quan,
-            'priceEach' => $p
+            
         ];
         $model = new MOrderDetails();
         $model->save($newEntry);
     }
-    
-    
-} 
+}

@@ -48,6 +48,22 @@ class MProducts extends Model
         return $query;
     }
 
+    public function DeleteProduct($id)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('products');
+        $builder->where('produceCode',$id);
+        $builder->limit(1);
+        return $builder->delete();
+    }
+
+    public function AddProduct($data)
+    {
+        $db = \Config\Database::connect();
+        $model = new MProducts();
+        return $model->save($data);
+    }
     
     
     

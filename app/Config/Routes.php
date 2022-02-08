@@ -38,6 +38,8 @@ $routes->match(['get','post'],'/BrowseProducts', 'CGeneral::BrowseProducts');
 $routes->match(['get','post'],'/BrowseProducts?page=(:any)', 'CGeneral::BrowseProducts');
 $routes->match(['get','post'],'/BrowseProducts/(:any)?page=(:any)', 'CGeneral::BrowseProducts/$1');
 $routes->match(['get','post'],'/BrowseProducts/(:any)', 'CGeneral::BrowseProducts/$1');
+$routes->match(['get','post'],'/ManageOrders?page=(:any)', 'CAdmin::ManageOrders');
+$routes->match(['get','post'],'/ManageOrders/(:any)', 'CAdmin::ManageOrders');
 $routes->match(['get','post'],'/Product/(:any)', 'CGeneral::ProductDrillDown/$1');
 
 
@@ -45,9 +47,15 @@ $routes->match(['get','post'],'/Member', 'CMember::index');
 $routes->match(['get','post'],'/Logout', 'CMember::Logout');
 $routes->match(['get','post'],'/Cart', 'CMember::Cart');
 $routes->match(['get','post'],'/Wishlist', 'CMember::Wishlist');
+$routes->match(['get','post'],'/Pay', 'CMember::Payment');
+$routes->match(['get','post'],'/Checkout', 'CMember::Checkout');
 $routes->match(['get','post'],'/Orders', 'CMember::Orders');
+$routes->match(['get','post'],'/ManageOrders', 'CAdmin::ManageOrders');
+$routes->match(['get','post'],'/Order/(:any)', 'CMember::OrderDrilldown/$1');
 $routes->match(['get','post'],'/AddToCart/(:any)', 'CMember::AddToCart/$1');
 $routes->match(['get','post'],'/RemoveFromCart/(:any)', 'CMember::RemoveFromCart/$1');
+$routes->match(['get','post'],'/DeleteProduct/(:any)', 'CAdmin::DeleteProduct/$1');
+$routes->match(['get','post'],'/AddProduct', 'CAdmin::AddProduct');
 $routes->match(['get','post'],'/AddToWishlist/(:any)', 'CMember::AddToWishlist/$1');
 $routes->match(['get','post'],'/RemoveFromWishlist/(:any)', 'CMember::RemoveFromWishlist/$1');
 

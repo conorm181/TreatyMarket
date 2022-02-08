@@ -7,6 +7,9 @@ use App\Models\MAdmin;
 use App\Models\MProducts;
 use App\Models\MWishlist;
 use App\Models\MOrders;
+use App\Models\MOrderDetails;
+use App\Models\MPayments;
+use DateTime;
 
 class CMember extends Controller
 {
@@ -161,14 +164,9 @@ class CMember extends Controller
         $ord = $model->GetOrders($cid);
         $data =[
             'orders' => array(),
-            'itemCounts' =>array(),
         ];
         foreach ($ord->getResult() as $item)
             array_push($data['orders'],$item);
-        //$ord = $model->GetQuantityOnOrder();
-        //print_r($data['orders']);
-        foreach ($data['orders'] as $item)
-            array_push($data['itemCounts'],$model->GetQuantityOnOrder($item->orderNumber));
         
         //print_r($data);
         echo view('head.php');
@@ -178,4 +176,93 @@ class CMember extends Controller
 
     }
 
+    public function OrderDrilldown($id)
+    {
+        $session = \Config\Services::session();
+        $model = new MCustomer();
+        $user = $model->GetID($session->get('email'))->getResult();
+        foreach ($user as $row)
+            $cid = $row->customerNumber;
+        $model = new MOrderDetails();
+        $wl = $model->OrderDetails($id);
+        $model = new MProducts();
+        $wish = array();
+        $quan = array();
+        //print_r($wl->getResult());
+        
+        foreach ($wl->getResult() as $item){
+            //print_r($item);
+            //echo "<br>";
+            $tmp = $model->GetProductByID($item->productCode)->getResult();
+            //print_r($tmp);
+            $quan[$item->productCode] = $item->quantityOrdered;
+            array_push($wish,$tmp);
+        }
+
+        
+        //echo "<br>";
+        //print_r($wish);
+        $data = [
+            'order' => $wish,
+            'quantity' => $quan,
+        ];
+        echo view('head.php');
+        echo view('/memberHeader');
+        //echo view('cart',$data);
+        echo view('orderView', $data);
+        echo view('footer');
+    }
+
+    public function Payment()
+    {
+        $session = \Config\Services::session();
+        $shopping = $session->get('cart');
+        $cart = array();
+        $products = array_keys($session->get('cart'));
+        $model = new MProducts();
+        foreach ($products as $entry){
+            array_push($cart,$model->GetProductByID($entry)->getResult());
+        }
+        $subtot = 0;
+        foreach ($cart as $cartItem)
+        {
+            $subtot+=($cartItem[0]->bulkSalePrice*$shopping[$cartItem[0]->produceCode]);
+        }
+
+        $data = [
+            'total' => $subtot+10,
+        ];
+        echo view('head.php');
+        echo view('/memberHeader');
+        echo view('pay',$data);
+        echo view('footer');
+
+
+    }
+
+    public function Checkout($discount=0)
+    {
+        $session = \Config\Services::session();
+        $model = new MCustomer();
+        $user = $model->GetID($session->get('email'))->getResult();
+        foreach ($user as $row)
+            $cid = $row->customerNumber;
+        $model = new MOrders();
+        $orderid = $model->MakeNewOrder($cid,date("Y-m-d"));
+        print_r($orderid->getResult());
+        foreach ($orderid->getResult() as $row)
+            $oid = $row->orderNumber;
+        $cart = $session->get('cart');
+        $model = new MOrderDetails();
+        $model2 = new MProducts();
+        $prods = array_keys($cart);
+        foreach ($prods as $item)
+        {
+            //$model->AddItemToOrder($item,$oid,$cart[$item],);
+        }
+        $model = new MOrderDetails();
+        $model2 = new MPayments();
+        $model2->MakePayment($cid,$oid,$_POST['username'],$_POST['cardNumber'],$_POST['cvv'],$_POST['month'],$_POST['year'],$model->GetOrderPrice());
+        return redirect()->to(base_url().'\/Order\/'.$oid);
+    }
 }

@@ -8,7 +8,7 @@ class MAdmin extends Model
 {
     protected $table = 'administrators';
 
-    protected $allowedFields = ['adminNumber','firstName','lastName','email','password'];
+    protected $allowedFields = ['adminNumber','adminFirstName','adminLastName','email','password'];
     protected $beforeInsert = ['beforeInsert'];
     protected $beforeUpdate = ['beforeUpdate'];
     
@@ -46,7 +46,18 @@ class MAdmin extends Model
         $query = $builder->countAllResults();
         return $query;
     }
-        
+    
+    public function GetUser($em)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('administrators');
+        $builder = $builder->select('adminNumber,adminFirstName,adminLastName','email');
+        $builder = $builder->where('email',$em);
+        $builder = $builder->limit(1);
+        $query = $builder->get();
+        return $query;
+    }
     
     
     
