@@ -59,6 +59,18 @@ class MCustomer extends Model
         $query = $builder->get();
         return $query;
     }
+
+    public function Profile($id)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('customers');
+        $builder = $builder->select();
+        $builder = $builder->where('email',$id);
+        $builder = $builder->limit(1);
+        $query = $builder->get();
+        return $query;
+    }
     
     
     public function GetID($em)
@@ -72,8 +84,31 @@ class MCustomer extends Model
         $query = $builder->get();
         return $query;
     }
+
+    public function EditUser($data){
+        $db = \Config\Database::connect();
+        if(isset($data['password']))
+            $data['password'] = hash('md5',$data['password']);
+        $model = new MProducts();
+        $builder = $this->builder();
+        $builder = $db->table('customers');
+        $builder = $builder->where('customerNumber',$data['customerNumber']);
+        return $builder->update($data);
+    }
     
-    
+    public function IsCustomer($email)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('customers');
+        $builder->select('email');
+        $builder->where('email',$email);
+        $query = $builder->countAllResults();
+        if($query==0)
+        return false;
+        else
+        return true;
+    }
     
     
     

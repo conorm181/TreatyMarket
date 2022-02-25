@@ -13,9 +13,13 @@
                         <p class="card-text">Quantity on Order: <?php echo $order->orderCount ?></p>
                         <p class="card-text">Cost: €<?php echo round($order->priceTot,2) ?></p>
                         <p class="card-text">Status: <?php echo $order->status ?></p>
-                            <form action="<?php echo base_url();?>/Order/<?php echo $order->orderNumber?>" method = "post" class="form-inline my-2 my-lg-0" style="margin: 1em 0">
-                            <button class="btn btn-primary" type="submit">View Order Details<br/></button>
-                            </form>
+                            <a href="<?php echo base_url();?>/Order/<?php echo $order->orderNumber?>"<button class="btn btn-primary" type="submit">View Order Details<br/></button></a>
+                            <?php if($order->status!='Shipped'&&$order->status!='Cancelled'){ ?>
+                            <a href="<?php echo base_url();?>/EditOrder/<?php echo $order->orderNumber?>"<button class="btn btn-primary" type="submit">Edit Order<br/></button></a>
+                            <?php } ?>
+                            <?php if($order->status=='Awaiting Payment'){ ?>
+                            <a href="<?php echo base_url();?>/LatePayment/<?php echo $order->orderNumber?>"<button class="btn btn-primary" type="submit">Pay<br/></button></a>
+                            <?php } ?>
                     </div>
                 </div>
             </div>

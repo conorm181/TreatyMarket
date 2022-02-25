@@ -100,16 +100,85 @@ class MOrders extends Model
         
     }
 
+    public function GetComment($id)
+    {
+        $db = \Config\Database::connect();
+        $model = new MOrders();
+        $builder = $this->builder();
+        $builder = $db->table('orders');
+        $builder = $builder->select('comments');
+        $builder = $builder->where('orderNumber',$id);
+        $builder->limit(1);
+        return $builder->get();
+        
+    }
     
+    public function SetComment($id,$c)
+    {
+        $db = \Config\Database::connect();
+        $model = new MOrders();
+        $builder = $this->builder();
+        $builder = $db->table('orders');
+        $builder = $builder->set('comments',$c);
+        $builder = $builder->where('orderNumber',$id);
+        return $builder->update();
+        
+    }
     
+    public function MakeOrder($id)
+    {
+        $db = \Config\Database::connect();
+        $temp = new MOrders();
+        $oid = $temp->GetNextOID();
+        $tdy = date('Y-m-d');
+        $newEntry = [
+            'orderNumber' => $oid,
+            'orderDate' => $tdy,
+            'requiredDate' => date('Y-m-d', strtotime($tdy. ' + 7 days')),
+            'status' => "Awaiting Payement",
+            'customerNumber' => $id
+        ];
+        $model = new MOrders();
+        $model->save($newEntry);
+        return $oid;
+    }
     
+    public function GetNextOID()
+    {
+        $db = \Config\Database::connect();
+        $model = new MOrders();
+        $builder = $this->builder();
+        $builder = $db->table('orders');
+        $builder = $builder->select('orderNumber');
+        $builder = $builder->orderBy('orderNumber',"DESC");
+        $builder->limit(1);
+        $row = $builder->get();
+        return $row->getResult()[0]->orderNumber+1;
+    }
     
+    public function GetDiscount($oid)
+    {
+        $db = \Config\Database::connect();
+        $model = new MOrders();
+        $builder = $this->builder();
+        $builder = $db->table('orders');
+        $builder = $builder->select('discount');
+        $builder = $builder->where('orderNumber',$oid);
+        $builder->limit(1);
+        $row = $builder->get();
+        return $row->getResult()[0]->discount;
+    }
     
-    
-    
-    
-    
-    
+    public function SetStatus($status,$oid)
+    {
+        $db = \Config\Database::connect();
+        $model = new MOrders();
+        $builder = $this->builder();
+        $builder = $db->table('orders');
+        $builder = $builder->set('status',$status);
+        $builder = $builder->where('orderNumber',$oid);
+        return $builder->update();
+    }
     
     
 } 

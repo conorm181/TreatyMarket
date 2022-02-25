@@ -61,12 +61,14 @@
           <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
           <div class="p-4">
             <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
-            <div class="input-group mb-4 border rounded-pill p-2">
-              <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+            <form method="POST" action="<?php echo base_url(); ?>/Coupon" class="input-group mb-4 border rounded-pill p-2">
+              
+              <input type="text" placeholder="Apply coupon" name="coupon" aria-describedby="button-addon3" class="form-control border-0">
               <div class="input-group-append border-0">
-                <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+                <button id="button-addon3" type="submit" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
               </div>
-            </div>
+              
+            </form>
           </div>
           <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
           <div class="p-4">
@@ -90,13 +92,14 @@
                   ?>
                 </strong></li>
                 
-              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
-
+                <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>€10.00</strong></li>
+                <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Discount</strong><strong><?php echo $subtot*($discount/100) ?></strong></li>
               <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-              <h5 class="font-weight-bold">€<?php echo  number_format((float)$subtot+10, 2, '.', '')?></h5>
+              <h5 class="font-weight-bold">€<?php echo number_format((float)$subtot+10-($subtot*($discount/100)), 2, '.', '')?></h5>
 
             </li>
             </ul><a href="<?php echo base_url(); ?>/Pay" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+            <?php session()->setFlashdata('discount',$subtot*($discount/100));?>
           </div>
         </div>
       </div>

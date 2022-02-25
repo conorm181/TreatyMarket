@@ -22,6 +22,9 @@
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">Quantity</div>
                   </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">Remove</div>
+                  </th>
           
                 </tr>
               </thead>
@@ -38,7 +41,8 @@
                     </div>
                   </th>
                   <td class="border-0 align-middle"><strong>€<?php echo number_format((float)$orderItem[0]->bulkSalePrice, 2, '.', '')?></strong></td>
-                  <td class="border-0 align-middle"><strong><?php echo $quantity[$orderItem[0]->produceCode]?></strong></td><!--
+                  <td class="border-0 align-middle"><strong><?php echo $quantity[$orderItem[0]->produceCode]?></strong></td>
+                  <td class="border-0 align-middle"><a href="<?php echo base_url() ?>/RemoveFromOrder/<?php echo $orderItem[0]->produceCode?>/<?php echo $id?>" class="text-dark"><i class="fa fa-trash"></i></a></td><!--
                   <td class="border-0 align-middle"><a href="<?php //echo base_url() ?>/Orders/<?php //echo $orderItem[0]->produceCode?>" class="text-dark"><i class="fa fa-trash"></i></a></td>-->
                 </tr>
                 <!-- End of Item -->

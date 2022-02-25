@@ -24,6 +24,7 @@
         <a class="nav-link fas fa-user-circle" style="font-family: FontAwesome; font-size:2em; margin-right: 3em; color: inherit;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
         <div class="dropdown-menu w-100" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="<?php echo base_url();?>/CMember/Cart">Cart</a>
+            <a class="dropdown-item" href="<?php echo base_url();?>/Profile">Profile</a>
             <a class="dropdown-item" href="<?php echo base_url();?>/CMember/Logout">Logout</a>
         </div>
       </li>

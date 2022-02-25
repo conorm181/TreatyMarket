@@ -65,10 +65,41 @@ class MProducts extends Model
         return $model->save($data);
     }
     
+    public function EditProduct($data)
+    {
+        $db = \Config\Database::connect();
+        $model = new MProducts();
+        $builder = $this->builder();
+        $builder = $db->table('products');
+        $builder = $builder->where('produceCode',$data['produceCode']);
+        return $builder->update($data);
+    }
     
+    public function GetImage($id){
+        $db = \Config\Database::connect();
+        $model = new MProducts();
+        $builder = $this->builder();
+        $builder = $builder->select('photo');
+        $builder = $builder->where('produceCode',$id);
+        $builder = $builder->limit(1);
+        return $builder->get();
+
+    }
     
-    
-    
+    public function CheckStock($id,$q)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('products');
+        $builder->select('quantityInStock');
+        $builder->where('produceCode',$id);
+        $builder->limit(1);
+        $query = $builder->get();
+        if($query->getResult()[0]->quantityInStock>=$q)
+        return true;
+        else
+        return false;
+    }
     
     
     

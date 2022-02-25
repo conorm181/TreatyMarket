@@ -9,7 +9,7 @@ class MPayments extends Model
 {
     protected $table = 'payments';
 
-    protected $allowedFields = ['orderNumber', 'productCode', 'quantityOrdered', 'priceEach'];
+    protected $allowedFields = ['customerNumber', 'cardType', 'cardNumber', 'cardName', 'expiryDate', 'CVV', 'checkNumber', 'paymentDate', 'amount', 'orderNumber'];
     protected $beforeInsert = ['beforeInsert'];
     protected $beforeUpdate = ['beforeUpdate'];
     
@@ -40,7 +40,7 @@ class MPayments extends Model
             'orderNumber' => $oid,
             
         ];
-        $model = new MOrderDetails();
+        $model = new MPayments();
         $model->save($newEntry);
     }
 }

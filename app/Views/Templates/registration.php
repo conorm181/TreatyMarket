@@ -1,5 +1,5 @@
 
-<form action="Register" method="post" style="width:40%;margin:3em auto">
+<form action="<?php echo base_url()?>/Register" method="post" style="width:40%;margin:3em auto">
 <h3>Registration</h3>
     <div class="form-group">
       <label for="cn">Customer Name</label>

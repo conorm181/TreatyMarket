@@ -15,13 +15,33 @@ class CGeneral extends Controller
     
     public function index()
     {
-        
         $sess = ['email','userType','userdata','cart'];
         //$sess = ['email','pass_word','userType'];
         $session = session();
         $session->remove($sess);
         $data = [];
         
+        if(isset($_COOKIE['username']))
+        {
+            $em = str_replace('%20','@',$_COOKIE['username']);
+            $cmodel = new MCustomer();
+            $amodel = new MAdmin();
+            if($cmodel->IsCustomer($em)){
+                $session->setFlashdata('success','Successful Login');
+                $session->set('email',$em);
+                $session->set('userType','Customer');
+                $session->set('cart',array());
+                return redirect()->to('/Member');
+                
+            }
+            else if($amodel->IsAdmin($em)){
+                $session->setFlashdata('success','Successful Login as Admin');
+                $session->set('email',$em);
+                $session->set('userType','Admin');
+                return redirect()->to('/Admin');
+            }
+            
+        }
    
             
             echo view('head.php',$data);
@@ -85,7 +105,10 @@ class CGeneral extends Controller
                $model->save($newData);
                $session = session();
                $session->setFlashdata('success','Successful Registration');
-               return redirect()->to('/Register');
+                $session->set('email',$newData['email']);
+                $session->set('userType','Customer');
+                $session->set('cart',array());
+               return redirect()->to('/Member');
            }
         }
         
@@ -154,34 +177,20 @@ class CGeneral extends Controller
                 
                 if($session->get('userType')=='Customer')
                 {
-                    
                     if(isset($_POST['remember'])){
-                        $this->response->setCookie('remember',$_POST['email'],'86500');
-
-                        //set_cookie('remember',$_POST['email'],'100');
-                        //->withPrefix('__Secure-')
-                        /*
-                        $cookie = (new Cookie('remember_token'))
-                        ->withValue('f699c7fd18a8e082d0228932f3acd40e1ef5ef92efcedda32842a211d62f0aa6')
-                        ->withExpires(new DateTime('+2 hours'))
-                        ->withPath('/')
-                        ->withDomain('')
-                        ->withSecure(true)
-                        ->withHTTPOnly(true)
-                        ->withSameSite(Cookie::SAMESITE_LAX);
-                        setCookie($cookie);
-                        */
+                        setcookie("username", $_POST['email'], time()+30*24*60*60,"/");
                     }
-                    
                     return redirect()->to('/Member');
                 }
                 else if($session->get('userType')=='Admin')
                 {
-                    
+                    if(isset($_POST['remember'])){
+                        setcookie("username", $_POST['email'], time()+30*24*60*60,"/");
+                    }
                     return redirect()->to('/CAdmin');
                 }
                 else
-                    return redirect()->to('/');
+                    return redirect()->to('/Login');
             }
         } 
         echo view('head.php',$data);
@@ -199,7 +208,7 @@ class CGeneral extends Controller
             'userType',
         ];
         $this->session->remove($unsetarr);
-        delete_cookie("remember");
+        setcookie("username","", time()-3900,"/");
         return redirect()->to("/");
     }
 

@@ -35,18 +35,34 @@ class MOrderDetails extends Model
         return $query;
     }
     
-    public function AddItemToOrder($pid,$oid,$quan,$p)
+    public function AddItemToOrder($pid,$oid,$quan)
     {
         $db = \Config\Database::connect();
+        $model = new MProducts();
+        $price = ($model->GetProductByID($pid)->getResult())[0]->bulkSalePrice;
+        
         $newEntry = [
             'orderNumber' => $oid,
             'productCode' => $pid,
             'quantityOrdered' => $quan,
-            'priceEach' => $p
+            'priceEach' => $price
         ];
         $model = new MOrderDetails();
         $model->save($newEntry);
     }
+
+    public function DeleteItem($id,$oid)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('orderDetails');
+        $builder->where('productCode',$id);
+        $builder->where('orderNumber',$oid);
+        $builder->limit(1);
+        return $builder->delete();
+    }
+
+    
     
     
 } 

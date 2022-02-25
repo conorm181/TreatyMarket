@@ -14,7 +14,7 @@
                 <div class="tab-content">
                     <div id="nav-tab-card" class="tab-pane fade show active">
 
-                        <form action="<?php echo base_url(); ?>/Checkout" method="POST" role="form">
+                        <form action="<?php echo base_url(); ?>/Checkout/<?php echo $oid?>" method="POST" role="form">
                             <div class="form-group"><label for="username">Full name (on the card)</label><input class="form-control" type="text" name="username" placeholder="Jeff Doe" required /></div>
                             <div class="form-group"><label for="cardNumber">Card number</label>
                                 <div class="input-group"><input class="form-control" type="text" name="cardNumber" placeholder="Your card number" required />
@@ -31,7 +31,7 @@
                                     <div class="form-group mb-4"><label data-toggle="tooltip" title="Three-digits code on the back of your card">CVV
                                             <i class="fa fa-question-circle"></i></label><input class="form-control" type="text" name="cvv" required /></div>
                                 </div>
-                            </div><a href="<?php echo base_url();?>/Checkout"><button class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" type="button"> Confirm </button></a>
+                            </div><a href="<?php echo base_url();?>/Checkout/<?php echo $oid?>"><button class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" type="submit"> Confirm </button></a>
                         </form>
                     </div>
                     <div id="nav-tab-paypal" class="tab-pane fade">

@@ -92,7 +92,7 @@ class CAdmin extends Controller
                         'bulkSalePrice' => $_POST['sale'],
                         'photo' =>  $x_file->getClientName(),
                     ];
-                    print_r($data);
+                    //print_r($data);
                     $add = $model->AddProduct($data);
                     if($add = false)
                         $session->setFlashdata('Insertion', 'Fail');
@@ -100,29 +100,7 @@ class CAdmin extends Controller
                         $session->setFlashdata('Insertion', 'Success');
                         return redirect()->to(base_url().'/BrowseProducts');
 
-                //} 
-                /*
-                $input = $this->validate([
-                    'file' => [
-                        'uploaded[file]',
-                        'mime_in[file,image/jpg,image/jpeg,image/png]',
-                        'max_size[file,1024]',
-                    ]
-                ]);
-            
-                if (!$input) {
-                    print_r('Choose a valid file');
-                } else {
-                    $img = $this->request->getFile('file');
-                    $img->move(WRITEPATH . 'uploads');
-            
-                    $data = [
-                       'name' =>  $img->getName(),
-                       'type'  => $img->getClientMimeType()
-                    ];
-                }
-            $session->setFlashdata('Insertion', 'Successful add product');
-            */
+                
             }  
             }else
             {
@@ -140,13 +118,83 @@ class CAdmin extends Controller
 
     }
 
+    public function EditProduct($id)
+    {
+        helper(['form', 'url']);
+        $request =\Config\Services::request();
+        $session = \Config\Services::session();
+        if($this->request->getMethod() == 'post')
+        {
+            //FormSubmit
+            $model = new MProducts();
+            if(true){
+                if (false) {
+                    print_r('Choose a valid file');
+                } else {
+                    if($_FILES['file']['size']!=0)
+                    {
+                        print_r(($_FILES['file']['size']));
+                        $x_file = $request->getFile('file');
+                        $image = \Config\Services::image()
+                        ->withFile($x_file)
+                        ->resize(345, 186, false, 'height')
+                        ->save("Assets/Images/products/thumbs/".$x_file->getClientName());
+
+                        $fullSizeImage = \Config\Services::image()
+                        ->withFile($x_file)
+                        ->save("Assets/Images/products/full/".$x_file->getClientName());
+
+                        $img =  $x_file->getClientName();
+                    }
+                    else{
+                        
+                       $img =  $model->GetImage($id)->getResult()[0]->photo;
+                    }
+                    
+                    $data = [
+                        'produceCode' => $id,
+                        'description' => $_POST['description'],
+                        'category' => $_POST['category'],
+                        'supplier' => $_POST['supplier'],
+                        'quantityInStock' => 0,
+                        'bulkBuyPrice' => $_POST['buy'],
+                        'bulkSalePrice' => $_POST['sale'],
+                        'photo' =>  $img,
+                    ];
+                    //print_r($data);
+                    $add = $model->EditProduct($data);
+                    if($add = false)
+                        $session->setFlashdata('Edit', 'Fail');
+                    else
+                        $session->setFlashdata('Edit', 'Success');
+                        return redirect()->to(base_url().'/BrowseProducts');
+
+                
+            }  
+            }else
+            {
+                $session->setFlashdata('Edit', 'Failed to Edit product');
+                return redirect()->to(base_url().'/BrowseProducts');
+            }
+            
+        }
+        $model=new MProducts();
+        $data = [
+            'product' => $model->GetProductByID($id)->getResult(),
+        ];
+            echo view('head.php');
+            echo view('/adminHeader');
+            echo view('editProduct',$data);
+            echo view('footer');
+    }
+
     public function ManageOrders(){
         $session = \Config\Services::session();
         
         $model = new MOrders();
         $ord = $model->GetAllOrders();
         $ord['user'] = "Admin";
-        print_r($ord);
+        //print_r($ord);
         /*
         $data =[
             'orders' => array(),
@@ -160,6 +208,15 @@ class CAdmin extends Controller
         echo view('orderlistpag',$ord);
         echo view('paginationnew');
         echo view('footer');
+    }
+
+    public function SaveComment($id)
+    {
+        $session = \Config\Services::session();
+        $model=new MOrders();
+        $model->SetComment($id,$_POST['comment']);
+
+        return redirect()->to(base_url().'/Order\/'.$id);
     }
     
     

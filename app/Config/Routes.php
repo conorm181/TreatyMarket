@@ -32,8 +32,8 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'CGeneral::index');
-$routes->get('/Login', 'CGeneral::Login');
-$routes->get('/Register', 'CGeneral::Register');
+$routes->match(['get','post'],'/Login', 'CGeneral::Login');
+$routes->match(['get','post'],'/Register', 'CGeneral::Register');
 $routes->match(['get','post'],'/BrowseProducts', 'CGeneral::BrowseProducts');
 $routes->match(['get','post'],'/BrowseProducts?page=(:any)', 'CGeneral::BrowseProducts');
 $routes->match(['get','post'],'/BrowseProducts/(:any)?page=(:any)', 'CGeneral::BrowseProducts/$1');
@@ -44,18 +44,26 @@ $routes->match(['get','post'],'/Product/(:any)', 'CGeneral::ProductDrillDown/$1'
 
 
 $routes->match(['get','post'],'/Member', 'CMember::index');
+$routes->match(['get','post'],'/Admin', 'CAdmin::index');
 $routes->match(['get','post'],'/Logout', 'CMember::Logout');
+$routes->match(['get','post'],'/Profile', 'CMember::Profile');
 $routes->match(['get','post'],'/Cart', 'CMember::Cart');
 $routes->match(['get','post'],'/Wishlist', 'CMember::Wishlist');
 $routes->match(['get','post'],'/Pay', 'CMember::Payment');
-$routes->match(['get','post'],'/Checkout', 'CMember::Checkout');
+$routes->match(['get','post'],'/LatePayment/(:any)', 'CMember::LatePayment/$1');
+$routes->match(['get','post'],'/Checkout/(:any)', 'CMember::Checkout/$1');
 $routes->match(['get','post'],'/Orders', 'CMember::Orders');
+$routes->match(['get','post'],'/Coupon', 'CMember::ApplyCoupon');
 $routes->match(['get','post'],'/ManageOrders', 'CAdmin::ManageOrders');
 $routes->match(['get','post'],'/Order/(:any)', 'CMember::OrderDrilldown/$1');
+$routes->match(['get','post'],'/EditOrder/(:any)', 'CMember::EditOrder/$1');
 $routes->match(['get','post'],'/AddToCart/(:any)', 'CMember::AddToCart/$1');
+$routes->match(['get','post'],'/SaveComment/(:any)', 'CAdmin::SaveComment/$1');
 $routes->match(['get','post'],'/RemoveFromCart/(:any)', 'CMember::RemoveFromCart/$1');
+$routes->match(['get','post'],'/RemoveFromOrder/(:any)/(:any)', 'CMember::RemoveFromOrder/$1/$2');
 $routes->match(['get','post'],'/DeleteProduct/(:any)', 'CAdmin::DeleteProduct/$1');
 $routes->match(['get','post'],'/AddProduct', 'CAdmin::AddProduct');
+$routes->match(['get','post'],'/EditProduct/(:any)', 'CAdmin::EditProduct/$1');
 $routes->match(['get','post'],'/AddToWishlist/(:any)', 'CMember::AddToWishlist/$1');
 $routes->match(['get','post'],'/RemoveFromWishlist/(:any)', 'CMember::RemoveFromWishlist/$1');
 

@@ -59,7 +59,19 @@ class MAdmin extends Model
         return $query;
     }
     
-    
+    public function IsAdmin($email)
+    {
+        $db = \Config\Database::connect();
+        $builder = $this->builder();
+        $builder = $db->table('administrators');
+        $builder->select('email');
+        $builder->where('email',$email);
+        $query = $builder->countAllResults();
+        if($query==0)
+        return false;
+        else
+        return true;
+    }
     
     
     

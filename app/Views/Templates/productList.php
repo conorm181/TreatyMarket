@@ -11,6 +11,12 @@ if(isset($_SESSION["Insertion"])&& $_SESSION["Insertion"]=='Fail'){
 }else if(isset($_SESSION["Insertion"])&& $_SESSION["Insertion"]=='Success')
 {
     echo "<div class=\"alert alert-success\" role=\"alert\">Product Successfully Added</div>";
+}else if(isset($_SESSION["Edit"])&& $_SESSION["Edit"]=='Success')
+{
+    echo "<div class=\"alert alert-success\" role=\"alert\">Product Successfully Edited</div>";
+}else if(isset($_SESSION["Edit"])&& $_SESSION["Edit"]=='Fail')
+{
+    echo "<div class=\"alert alert-danger\" role=\"alert\">Product Failed to be Edited</div>";
 }
 ?>
 <form action="<?php echo base_url();?>/BrowseProducts" method = "post" class="form-inline my-2 my-lg-0" style="margin:1em">
@@ -42,7 +48,9 @@ echo "<div class=\"card-group\">";
                 <div class="buto"><a href="<?php echo base_url();?>/AddToWishlist/<?php echo $row['produceCode']?>">Add To WishList</a></div>
             <?php }?>
             <?php if($userType=="Admin"){ ?>
+                <div class="buto"><a style="background-color:green;" href="<?php echo base_url();?>/EditProduct/<?php echo $row['produceCode']?>">Edit Product</a></div>
                 <div class="buto"><a style="background-color:red" href="<?php echo base_url();?>/DeleteProduct/<?php echo $row['produceCode']?>">Delete Product</a></div>
+
             <?php }?>
             </div>
         </div>  
